@@ -13,7 +13,7 @@ solve_sudoku_1_test() ->
 		 4,3,2,1],
     %%?debugVal(sudoku:solve(InitList)),
     Result = sudoku:solve(InitList),
-    ?assertEqual(Solution1, Result),
+    ?assertEqual({solution,Solution1}, Result),
     ok.
 
 solve_sudoku_2_test() ->
@@ -27,5 +27,5 @@ solve_sudoku_2_test() ->
 		 3,1,4,2],
     %%?debugVal(sudoku:solve(InitList)),
     Result = sudoku:solve(InitList),
-    ?assertEqual(Solution1, Result),
+    ?assertEqual({solution, Solution1}, Result),
     ok.
