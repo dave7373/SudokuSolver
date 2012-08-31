@@ -69,17 +69,16 @@ internal_solve_value_sequential(Matrix, _Position, Value, N) when Value > N ->
     {fail, Matrix};
 internal_solve_value_sequential(Matrix, Position, TryValue, N) ->
     debug_work_progress(false, Matrix, Position, TryValue),
-    %%TODO remove nested case
-    case matrix:set(Position, TryValue, Matrix) of
-	{not_allowed, _Pos, _Val} ->
-	    internal_solve_value_sequential(Matrix, Position, TryValue+1, N);
-	UpdatedMatrix ->
-	    case internal_solve_position(UpdatedMatrix, Position+1, 1, N) of
-		{fail, _FailedMatrix} -> 
-		    internal_solve_value_sequential(Matrix, Position, TryValue+1, N);
-		{solution, SolutionMatrix} -> 
-		    {solution, SolutionMatrix} 
-	    end
+    Result = 
+	case matrix:set(Position, TryValue, Matrix) of
+	    {not_allowed, _Pos, _Val} ->
+		{fail, Matrix};		
+	    UpdatedMatrix ->
+		internal_solve_position(UpdatedMatrix, Position+1, 1, N)
+	end,
+    case Result of 
+	{fail, _Ignore} -> internal_solve_value_sequential(Matrix, Position, TryValue+1, N);    
+	{solution, SolutionMatrix} -> {solution, SolutionMatrix} 
     end.
 
 debug_work_progress(false, _Matrix, _Position, _TryValue) ->
