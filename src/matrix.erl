@@ -1,10 +1,16 @@
 %% @author David Almroth
 %% This is the ADT Matrix that can be used to solve sudoku problems.
 %%
-%% Rows, columns and boxes are numbered from 0.
-%% Positions for a specific number is also numbered from 0.
+%% The matrix has rows, columns and boxes.
+%% The key to understand the matrix is this: Every row, column and box 
+%% can have only one occurance of the values 1,2,3,4,5,6,7,8,9.
+%% 
+%% Rows, columns and boxes are numbered from 0 to N.
+%% N is the size of the matrix.
+%% Positions for a specific number are numbered from 0 to N*N-1.
+%%
 %% A normal 9 x 9 matrix then has 9 rows (0,1,2..8) and 9 columns (0,1,2..8) 
-%% and 9 boxes (0,1,2...8). it also has 81 numbers with position (0,1,2..80)
+%% and 9 boxes (0,1,2...8). It also has 81 numbers with position (0,1,2..80)
 
 -module(matrix).
 

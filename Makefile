@@ -20,8 +20,7 @@ all : clean compile test
 
 test : compile
 
-	$(ERL) -pa ./ebin \
-	-eval 'eunit:test([$(TEST_FILES)], [verbose])' -s init stop -noshell
+	$(ERL) -pa ./ebin -eval 'eunit:test([$(TEST_FILES)], [verbose])' -s init stop -noshell
 	
 #	 -eval 'eunit:test([$(TEST_FILES)], [])' -s init stop -noshell
 #To get verbose eunit output, just insert [verbose] like in this example:
@@ -29,8 +28,7 @@ test : compile
 
 run : compile
 
-	$(ERL) -pa ./ebin \
-	-eval 'sudoku:test9_hard()' -s init stop -noshell
+	$(ERL) -pa ./ebin -eval 'sudoku:test9_hard()' -s init stop -noshell
 
 clean :
 	rm -rf ebin/*.beam

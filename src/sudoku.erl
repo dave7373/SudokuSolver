@@ -61,10 +61,7 @@ internal_solve_position(Matrix, Position, TryValue, N) ->
     case matrix:has_initial_value(Position, Matrix) of
 	true -> internal_solve_position(Matrix, Position+1, 1, N);
 	false -> internal_solve_value_sequential(Matrix, Position, TryValue, N)		    
-    end.
-
-
-    
+    end.  
 
 %% Will try values from 1 to N for a specified position to see if a 
 %% solution can be found.
@@ -72,6 +69,7 @@ internal_solve_value_sequential(Matrix, _Position, Value, N) when Value > N ->
     {fail, Matrix};
 internal_solve_value_sequential(Matrix, Position, TryValue, N) ->
     debug_work_progress(false, Matrix, Position, TryValue),
+    %%TODO remove nested case
     case matrix:set(Position, TryValue, Matrix) of
 	{not_allowed, _Pos, _Val} ->
 	    internal_solve_value_sequential(Matrix, Position, TryValue+1, N);
