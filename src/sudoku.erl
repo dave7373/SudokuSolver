@@ -48,38 +48,37 @@ test(InitList) ->
 solve(InitList) ->
     Matrix = matrix:new(InitList),
     %% Starts the job with position = 0 trying value = 1
-    Solution = internal_solve_position(Matrix, 0, 1, matrix:get_n(Matrix)),
+    Solution = internal_solve(Matrix, 0, 1, matrix:get_n(Matrix)),
     case Solution of 
 	{fail, FailMatrix} -> {fail, matrix:to_list(FailMatrix)};
 	{solution, SolutionMatrix} -> {solution, matrix:to_list(SolutionMatrix)}
     end.
 	    
 %% Operates on one position in the sudoku matrix
-internal_solve_position(Matrix, Position, _TryValue, N) when Position >= N*N -> 
+internal_solve(Matrix, Position, _TryValue, N) when Position >= N*N -> 
     {solution, Matrix};
-internal_solve_position(Matrix, Position, TryValue, N) -> 
-    case matrix:has_initial_value(Position, Matrix) of
-	true -> internal_solve_position(Matrix, Position+1, 1, N);
-	false -> internal_solve_value_sequential(Matrix, Position, TryValue, N)		    
-    end.  
-
-%% Will try values from 1 to N for a specified position to see if a 
-%% solution can be found.
-internal_solve_value_sequential(Matrix, _Position, Value, N) when Value > N -> 
+internal_solve(Matrix, _Position, Value, N) when Value > N -> 
     {fail, Matrix};
-internal_solve_value_sequential(Matrix, Position, TryValue, N) ->
-    debug_work_progress(false, Matrix, Position, TryValue),
-    Result = 
+internal_solve(Matrix, Position, TryValue, N) ->
+    %% debug_work_progress(true, Matrix, Position, TryValue),
+    case matrix:has_initial_value(Position, Matrix) of
+	true -> internal_solve(Matrix, Position+1, 1, N);
+	false -> try_value(Matrix, Position, TryValue, N)
+    end.
+
+try_value(Matrix, Position, TryValue, N) ->
+    ResultTryValue = 
 	case matrix:set(Position, TryValue, Matrix) of
 	    {not_allowed, _Pos, _Val} ->
 		{fail, Matrix};		
 	    UpdatedMatrix ->
-		internal_solve_position(UpdatedMatrix, Position+1, 1, N)
+		internal_solve(UpdatedMatrix, Position+1, 1, N)
 	end,
-    case Result of 
-	{fail, _Ignore} -> internal_solve_value_sequential(Matrix, Position, TryValue+1, N);    
+    case ResultTryValue of 
+	{fail, _Ignore} -> internal_solve(Matrix, Position, TryValue+1, N);    
 	{solution, SolutionMatrix} -> {solution, SolutionMatrix} 
     end.
+
 
 debug_work_progress(false, _Matrix, _Position, _TryValue) ->
     nop;

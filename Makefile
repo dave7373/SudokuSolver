@@ -30,5 +30,10 @@ run : compile
 
 	$(ERL) -pa ./ebin -eval 'sudoku:test9_hard()' -s init stop -noshell
 
+runeasy : compile
+
+	$(ERL) -pa ./ebin -eval 'sudoku:test9_easy()' -s init stop -noshell
+
 clean :
 	rm -rf ebin/*.beam
+	rm -rf erl_crash.dump

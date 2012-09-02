@@ -2,8 +2,9 @@
 %% This is the ADT Matrix that can be used to solve sudoku problems.
 %%
 %% The matrix has rows, columns and boxes.
-%% The key to understand the matrix is this: Every row, column and box 
-%% can have only one occurance of the values 1,2,3,4,5,6,7,8,9.
+%% The key to understanding the sudoku matrix is this: 
+%% Every row, column and box can have only one occurance 
+%% of the values 1,2,3,4,5,6,7,8,9.
 %% 
 %% Rows, columns and boxes are numbered from 0 to N.
 %% N is the size of the matrix.
