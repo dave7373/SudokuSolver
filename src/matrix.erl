@@ -24,7 +24,7 @@ new(InitList) when is_list(InitList) ->
 		fun(X, Acc) -> dict:store(X-1, lists:nth(X, InitList), Acc) end, 
 		dict:new(), 
 		lists:seq(1,length(InitList))),
-    Matrix = new(Content, trunc(math:sqrt(length(InitList))), InitList),
+    Matrix = new(Content, trunc(math:sqrt(length(InitList)))),
     lists:foldl(
       fun(X, Acc) -> 
 	      case lists:nth(X, InitList) of 
@@ -35,17 +35,17 @@ new(InitList) when is_list(InitList) ->
       Matrix, 
       lists:seq(1,length(InitList))).
     
-new(InitDict, N, InitList) ->
+new(InitDict, N) ->
     ?assert((N == 4) or (N == 9) or (N == 16)),
     ?assertEqual(N*N, dict:size(InitDict)),
     Rows = get_dict_with_n_sets(N),
     Cols = get_dict_with_n_sets(N),
     Boxes = get_dict_with_n_sets(N),
-    {Rows, Cols, Boxes, InitDict, N, InitList}.	
+    {Rows, Cols, Boxes, InitDict, N}.	
 
 
 to_list(Matrix) ->
-    {_Rows, _Cols, _Boxes, Content, _N, _InitList} = Matrix,
+    {_Rows, _Cols, _Boxes, Content, _N} = Matrix,
     lists:foldl(fun(X, Acc) -> [dict:fetch(dict:size(Content) - X, Content) | Acc] end, 
 		[], lists:seq(1, dict:size(Content))).
 
@@ -55,7 +55,7 @@ get_dict_with_n_sets(N) ->
 
 %% Returns  ModifiedMatrix or not_allowed if value is not allowed.
 set(Pos, Value, Matrix) ->
-    {Rows, Cols, Boxes, Content, N, InitList} = Matrix,
+    {Rows, Cols, Boxes, Content, N} = Matrix,
     Row = dict:fetch(row(Pos, N), Rows),
     Col = dict:fetch(col(Pos, N), Cols),
     Box = dict:fetch(box(Pos, N), Boxes),
@@ -66,19 +66,19 @@ set(Pos, Value, Matrix) ->
 	    NewCols = dict:store(col(Pos, N), [Value | Col], Cols),
 	    NewBoxes = dict:store(box(Pos, N), [Value | Box], Boxes),
 	    NewContent = dict:store(Pos, Value, Content),
-	    {NewRows, NewCols, NewBoxes, NewContent, N, InitList};
+	    {NewRows, NewCols, NewBoxes, NewContent, N};
 	_Other ->
 	    {not_allowed, Pos, Value}
     end.
 
 get(Pos, Matrix) ->
-    {_Rows, _Cols, _Boxes, Content, _N, _InitList} = Matrix,
+    {_Rows, _Cols, _Boxes, Content, _N} = Matrix,
     {ok, Value} = dict:find(Pos, Content),
     Value.
 
 %%The N-value for a 9 x 9 matrix is 9
 get_n(Matrix) ->
-    {_Rows, _Cols, _Boxes, _Content, N, _InitList} = Matrix,
+    {_Rows, _Cols, _Boxes, _Content, N} = Matrix,
     N.
 
 has_initial_value(Pos, Matrix)	->
@@ -104,5 +104,5 @@ sqrt(N) ->
 empty(N) when is_integer(N) ->
     Content = lists:foldl(fun(X, Acc) -> dict:store(X, 0, Acc) end, 
 			  dict:new(), lists:seq(0,N*N-1)),
-    new(Content, N, []).
+    new(Content, N).
 
