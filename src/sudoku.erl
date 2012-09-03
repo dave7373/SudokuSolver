@@ -42,9 +42,12 @@ test9_easy() ->
 	  5,0,3,1,0,0,0,8,6]).
 	 
 test(InitList) ->
-    io:format("~p~n", [sudoku:solve(InitList)]).
+    %%fprof:trace(start),    
+    io:format("~p~n", [sudoku:solve(InitList)]),
+    %%fprof:trace(stop),
+    ok.
 
-% This is a brute force sudoku solving algorithm
+% This is a sequential brute force sudoku solving algorithm
 solve(InitList) ->
     Matrix = matrix:new(InitList),
     %% Starts the job with position = 0 trying value = 1
@@ -60,7 +63,7 @@ internal_solve(Matrix, Position, _TryValue, N) when Position >= N*N ->
 internal_solve(Matrix, _Position, Value, N) when Value > N -> 
     {fail, Matrix};
 internal_solve(Matrix, Position, TryValue, N) ->
-    %% debug_work_progress(true, Matrix, Position, TryValue),
+    debug_work_progress(false, Matrix, Position, TryValue),
     case matrix:has_initial_value(Position, Matrix) of
 	true -> internal_solve(Matrix, Position+1, 1, N);
 	false -> try_value(Matrix, Position, TryValue, N)
@@ -79,7 +82,7 @@ try_value(Matrix, Position, TryValue, N) ->
 	{solution, SolutionMatrix} -> {solution, SolutionMatrix} 
     end.
 
-
+%% TODO: make debugging a preprocessor ifdef
 debug_work_progress(false, _Matrix, _Position, _TryValue) ->
     nop;
 debug_work_progress(true, Matrix, Position, TryValue) ->
