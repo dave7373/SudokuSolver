@@ -26,13 +26,17 @@ test : compile
 #To get verbose eunit output, just insert [verbose] like in this example:
 #	 -eval 'eunit:test([$(TEST_FILES)], [verbose])' -s init stop -noshell
 
-run : compile
+run9hard : compile
 
 	$(ERL) -pa ./ebin -eval 'sudoku:test9_hard()' -s init stop -noshell
 
-runeasy : compile
+run9easy : compile
 
-	$(ERL) -pa ./ebin -eval 'sudoku:test9_easy()' -s init stop -noshell
+	$(ERL) -pa ./ebin -eval 'sudoku:test9_easy()' -s init stop -noshell 
+	
+run4 : compile
+
+	$(ERL) -pa ./ebin -eval 'sudoku:test4()' -s init stop -noshell
 
 clean :
 	rm -rf ebin/*.beam

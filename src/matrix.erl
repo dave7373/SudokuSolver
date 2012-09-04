@@ -15,7 +15,9 @@
 
 -module(matrix).
 
--export([new/1, to_list/1, set/3, get/2, get_n/1, has_initial_value/2, empty/1]).
+-export([new/1, empty/1]).
+-export([to_list/1, set/3, get/2, get_n/1, has_initial_value/2]).
+
 -include_lib("eunit/include/eunit.hrl").
 
 
@@ -34,6 +36,11 @@ new(InitList) when is_list(InitList) ->
       end,
       Matrix, 
       lists:seq(1,length(InitList))).
+
+empty(N) when is_integer(N) ->
+    Content = lists:foldl(fun(X, Acc) -> dict:store(X, 0, Acc) end, 
+			  dict:new(), lists:seq(0,N*N-1)),
+    new(Content, N).
     
 new(InitDict, N) ->
     ?assert((N == 4) or (N == 9) or (N == 16)),
@@ -101,8 +108,5 @@ sqrt(N) ->
 	16 -> 4
     end.
 
-empty(N) when is_integer(N) ->
-    Content = lists:foldl(fun(X, Acc) -> dict:store(X, 0, Acc) end, 
-			  dict:new(), lists:seq(0,N*N-1)),
-    new(Content, N).
+
 

@@ -39,10 +39,12 @@ init_list_4_test() ->
 		 0,0,0,0],
     Matrix = matrix:new(InitList),
 
+    %%Set one value
     Matrix2 = matrix:set(4,3, Matrix),
     Result = matrix:get(4, Matrix2),
     ?assertEqual(3, Result),
 
+    %%Make sure the matrix can be transformed back to the same list
     ResultList = matrix:to_list(Matrix),
     %%?debugVal(ResultList),
     ?assertEqual(InitList, ResultList),
