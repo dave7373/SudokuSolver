@@ -72,7 +72,7 @@ internal_solve(Matrix, Position, TryValue, N) ->
 try_value(Matrix, Position, TryValue, N) ->
     ResultTryValue = 
 	case matrix:set(Position, TryValue, Matrix) of
-	    {not_allowed, _Pos, _Val} ->
+	    not_allowed ->
 		{fail, Matrix};		
 	    UpdatedMatrix ->
 		internal_solve(UpdatedMatrix, Position+1, 1, N)

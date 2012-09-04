@@ -68,7 +68,7 @@ set(Pos, Value, Matrix) ->
 	    NewContent = dict:store(Pos, Value, Content),
 	    {NewRows, NewCols, NewBoxes, NewContent, N};
 	_Other ->
-	    {not_allowed, Pos, Value}
+	    not_allowed
     end.
 
 get(Pos, Matrix) ->

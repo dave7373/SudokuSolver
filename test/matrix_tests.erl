@@ -15,21 +15,21 @@ get_set_test() ->
     ?assertEqual(9, Result2),
 
     %%Box test
-    ?assertMatch({not_allowed, _, _}, matrix:set(0,1, Matrix2)),
-    ?assertMatch({not_allowed, _, _}, matrix:set(1,1, Matrix2)),
-    ?assertMatch({not_allowed, _, _}, matrix:set(2,1, Matrix2)),
-    ?assertMatch({not_allowed, _, _}, matrix:set(9,1, Matrix2)),
-    ?assertMatch({not_allowed, _, _}, matrix:set(10,1, Matrix2)),
-    ?assertMatch({not_allowed, _, _}, matrix:set(11,1, Matrix2)),
-    ?assertMatch({not_allowed, _, _}, matrix:set(18,1, Matrix2)),
-    ?assertMatch({not_allowed, _, _}, matrix:set(19,1, Matrix2)),
-    ?assertMatch({not_allowed, _, _}, matrix:set(20,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(0,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(1,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(2,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(9,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(10,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(11,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(18,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(19,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(20,1, Matrix2)),
 
     %%Row test
-    ?assertMatch({not_allowed, _, _}, matrix:set(8,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(8,1, Matrix2)),
 
     %%Col test
-    ?assertMatch({not_allowed, _, _}, matrix:set(27,1, Matrix2)),
+    ?assertMatch(not_allowed, matrix:set(27,1, Matrix2)),
     ok.
 
 init_list_4_test() ->
